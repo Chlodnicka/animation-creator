@@ -36,15 +36,10 @@ def handle_upload():
   
   sqs = boto3.resource('sqs', region_name="eu-central-1")
 
-  tweets = sqs.get_queue_by_name(QueueName='tweets')
-  response = tweets.send_message(MessageBody='Hello World', MessageAttributes={
-    'Author': {
-        'StringValue': 'Jakub',
-        'DataType': 'String'
-    }
-  })
+  tweets = sqs.get_queue_by_name(QueueName=os.getenv('APP_BUCKET_NAME'))
+  response = tweets.send_message(MessageBody=json.dumps(photos_list))
 
-  return json.dumps(photos_list) 
+  return "OK"
 
 
 @app.route("/prepare")
