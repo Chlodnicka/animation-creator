@@ -1,5 +1,6 @@
 import boto3
 import os
+import json
 
 from flask import Flask
 from flask import render_template, request, flash
@@ -9,6 +10,8 @@ app = Flask(__name__)
 
 s3 = boto3.resource('s3')
 media_storage = S3MediaStorage(s3, os.getenv('APP_BUCKET_NAME'))
+
+photos_list = {'email' : 'maja.chlodnicka@gmail.com', 'photos': []}
 
 @app.route("/")
 def hello():
@@ -20,14 +23,23 @@ def handle_upload():
   if 'uploaded_file' not in request.files:
     flash('No file part')
     return redirect(request.url)
-  
-  uploaded_file = request.files['uploaded_file']
+
+  uploaded_file = request.files['uploaded_file']  
+  destination = "/uploaded/%s" % uploaded_file.filename
+ 
   media_storage.store(
-     dest="/uploaded/%s" % uploaded_file.filename,
+     dest=destination,
      source=uploaded_file
   )
 
-  return "OK" 
+  photos_list['photos'].append(destination)
+  
+  sqs = boto3.resource('sqs', region_name="eu-central-1")
+
+  tweets = sqs.get_queue_by_name(QueueName=os.getenv('APP_BUCKET_NAME'))
+  response = tweets.send_message(MessageBody=json.dumps(photos_list))
+
+  return "OK"
 
 
 @app.route("/prepare")
