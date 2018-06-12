@@ -1,8 +1,71 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<form method="POST" action="{{ url_for('handle_upload') }}" enctype="multipart/form-data">
-  <input name="uploaded_file" type="file"/>
-  <button type="submit">Add Photo</button>
-</form>
+    <div class="intro">
+        <h1>Kreator animacji</h1>
+        <h2>Stwórz swoją własną animację na podstawie zdjęć.</h2>
+        <p class="info">Możliwe formaty plików to: PNG i JPG. <br/>
+            Pliki o innych formatach zostaną pominięte.</p>
+    </div>
+
+    <div class="dropzone-section">
+        <div class="message">
+
+        </div>
+        <form action="{{ url_for('handle_upload') }}" method="POST" enctype="multipart/form-data" class="dropzone"
+              id="my-awesome-dropzone">
+            <div class="dropzone-previews"></div>
+            <div class="dropzone-inputs">
+                <input type="email" name="email" placeholder="Adres e-mail"/>
+                <button type="submit">Wyślij</button>
+            </div>
+            <div class="dz-message" data-dz-message><span>Przeciągnij pliki tutaj</span></div>
+        </form>
+    </div>
+
+    <script>
+        Dropzone.options.myAwesomeDropzone = { // The camelized version of the ID of the form element
+
+            // The configuration we've talked about above
+            autoProcessQueue: false,
+            uploadMultiple: true,
+            parallelUploads: 100,
+            maxFiles: 100,
+            addRemoveLinks: true,
+            dictRemoveFile: "Usuń plik",
+
+            // The setting up of the dropzone
+            init: function () {
+                var myDropzone = this;
+
+                // First change the button to actually tell Dropzone to process the queue.
+                this.element.querySelector("button[type=submit]").addEventListener("click", function (e) {
+                    // Make sure that the form isn't actually being sent.
+                    e.preventDefault();
+                    e.stopPropagation();
+                    myDropzone.processQueue();
+                });
+                this.on("addedfile", function (file) {
+                    $('.message').hide();
+                });
+                this.on("sendingmultiple", function () {
+
+                });
+                this.on("successmultiple", function (files, response) {
+                    responseJson = JSON.parse(response);
+                    myDropzone.removeAllFiles();
+                    $('input[type="email"]').val('');
+                    $('.message').text(responseJson.message).show();
+                });
+                this.on("errormultiple", function (files, response) {
+                    responseJson = JSON.parse(response);
+                    myDropzone.removeAllFiles();
+                    $('input[type="email"]').val('');
+                    $('.message').text(responseJson.message).show();
+                });
+            }
+
+        }
+
+    </script>
 {% endblock %}

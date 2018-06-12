@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700&subset=latin-ext');
+
+body {
+    background-image: url('../assets/table-background.jpg');
+    text-align: center;
+    margin: 0;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.intro {
+    background: rgba(0, 0, 0, 0.8);
+    color: #eeeeee;
+    margin: 50px 0;
+    padding: 50px;
+}
+
+.dropzone-section {
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.dropzone {
+    background: rgba(0, 0, 0, 0.2);
+    border-style: dotted;
+    border-radius: 20px;
+    border-color: black;
+    color: #eeeeee;
+}
+
+.dropzone-inputs input, .dropzone-inputs button {
+    display: block;
+    margin: 20px auto;
+}
+
+.dropzone-inputs input {
+    background: rgba(0, 0, 0, 0.4);
+    height: 40px;
+    width: 50%;
+    border: none;
+    text-align: center;
+    color: #eeeeee;
+}
+
+.dropzone-inputs button {
+    background: rgba(0, 0, 0, 0.4);
+    border: none;
+    padding: 10px 20px;
+    color: #eeeeee;
+    text-transform: uppercase;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #eeeeee;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+    color: #eeeeee;
+}
+
+:-ms-input-placeholder { /* IE 10+ */
+    color: #eeeeee;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    color: #eeeeee;
+}
+
+.message {
+    display: none;
+    margin: 20px auto;
+}
+
+.dz-preview {
+    background: transparent !important;
+}
+
+.dz-remove {
+    color: #eeeeee;
+    text-decoration: none;
+}
