@@ -25,9 +25,6 @@ def hello():
 @app.route("/upload", methods=['POST'])
 def handle_upload():
     try:
-        # todo: redirecty
-        # todo: consumer i łączenie plików
-
         if len(request.files) <= 1:
             return json.dumps({
                 'message': 'Jeden plik to za mało by zrobić animację',
