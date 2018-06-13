@@ -26,16 +26,19 @@ def hello():
 def handle_upload():
     try:
         # todo: redirecty
-        # todo: jak nie ma adresu email to nie można wysłać
         # todo: consumer i łączenie plików
 
         if len(request.files) <= 1:
-            flash('Brak plików')
-            return redirect(request.url)
+            return json.dumps({
+                'message': 'Jeden plik to za mało by zrobić animację',
+                'status': 500
+            })
 
-        # if not request.form.get('email') :
-        #     flash('Brak zwrotnego adresu email')
-        #     return redirect(request.url)
+        if not request.form.get('email'):
+            return json.dumps({
+                'message': 'Podanie adresu e-mail jest wymagane. W innym wypadku nie otrzymasz animacji.',
+                'status': 500
+            })
 
         photos_list = {'email': request.form.get('email'), 'photos': []}
 
